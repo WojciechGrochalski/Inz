@@ -1,6 +1,7 @@
 #!/bin/bash
 
 service mysql start
+
 mysql -uroot <<MYSQL_SCRIPT
 CREATE DATABASE phpmyadmin;
 CREATE USER 'phpmyadmin'@'localhost' IDENTIFIED BY 'toor';
@@ -13,9 +14,7 @@ echo "MySQL user created."
 echo "Username:   phpmyadmin"
 echo "Password:   phpmyadmin"
 
+sed -i 's/It works!/It works! from Container/g' /var/www/html/index.html
 
-
-
-
-
+/usr/sbin/apache2ctl -D FOREGROUND  && bash  && service mysql start
 
