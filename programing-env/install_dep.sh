@@ -2,9 +2,14 @@
 if ${Dotnet} 
 then
    echo "Installation packages for dotnet"
-   wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-   dpkg -i packages-microsoft-prod.deb
-   apt-get update &&
-   apt-get install  -y dotnet-sdk-3.1 aspnetcore-runtime-3.1
+   pkg=dotnet-sdk-3.1
+   status="$(dpkg-query -W --showformat='${db:Status-Status}' "$pkg" 2>&1)"
+   echo $status
+   if [ ! $? = 0 ] || [ ! "$status" = installed ]; then
+      echo "package $pkg will be install on background"
+   else echo "package $pkg was installed previously"
+      dotnet --info
+   fi
+   
 else echo "No flags dotnet"
 fi

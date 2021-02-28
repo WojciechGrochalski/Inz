@@ -7,18 +7,8 @@ ARG Dotnet=false
 ENV Dotnet ${Dotnet}
 #Installation packages
 LABEL Installation packages
-RUN apt-get update &&  apt-get upgrade -y \ 
-    && apt-get install -y \
-      wget \
-      apt-transport-https 
-
-#Installation dotnet
- LABEL Installation packages
- WORKDIR /home
- COPY install_dep.sh install_dep.sh
- RUN chmod +x install_dep.sh
- RUN ./install_dep.sh
- RUN apt-get install -y --no-install-recommends \
+ RUN apt-get update &&  \ 
+      apt-get install -y --no-install-recommends \
       python3-dev \
       apache2 \
       mysql-server \
@@ -29,9 +19,15 @@ RUN apt-get update &&  apt-get upgrade -y \
       php-gd \
       php-json \
       php-curl \
-      nano 
-RUN apt-get autoremove -y
-RUN apt-get clean
+      nano \
+      wget \
+      apt-transport-https \
+      ssl-cert \
+      ca-certificates
+ RUN wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb  \
+      && dpkg -i packages-microsoft-prod.deb \
+      && apt-get update 
+
 #Config Apache server
 LABEL Config Apache server
 EXPOSE 80 443
@@ -45,15 +41,18 @@ COPY startup_script.sh startup_script.sh
 RUN chmod +x startup_script.sh
 COPY dotnet.sh dotnet.sh
 RUN chmod +x dotnet.sh
+COPY install_dep.sh install_dep.sh
+RUN chmod +x install_dep.sh
 RUN usermod -d /var/lib/mysql/ mysql
 WORKDIR /etc/phpmyadmin
 RUN rm config-db.php
 COPY config-db.php  config-db.php
-WORKDIR /home
 RUN echo "/home/dotnet.sh" >>~/.bashrc
+
 
 #Run services on startup container
 LABEL Run services on startup container
+WORKDIR /home
 CMD ./startup_script.sh 
-
+ENTRYPOINT ./startup_script.sh 
 
