@@ -17,14 +17,6 @@ def CheckGPIOBoard(localGPIOBoard, globalGPIOBoard):
         for item in localGPIOBoard:
             if item.GPIONumber == newitem.GPIONumber:
                 if item.GPIOStatus != newitem.GPIOStatus or item.GPIOMode != newitem.GPIOMode:
-                    # print("Nalezy zmienić lokalny pin :")
-                    # print(item.GPIONumber, item.GPIOStatus, item.GPIOMode, sep=' ')
-                    # print("Na globalny : ")
-                    # print(newitem.GPIONumber, newitem.GPIOStatus, newitem.GPIOMode, sep=' ')
-                    # print(f"Gpio {newitem.GPIONumber} is setting now")
-                    # print("newitem: ", newitem.GPIOMode, " ", newitem.GPIOStatus)
-                    # print("item: ", item.GPIOMode, " ", item.GPIOStatus)
-                    # print("end")
                     item.GPIOStatus = newitem.GPIOStatus
                     item.GPIOMode = newitem.GPIOMode
                     GPIO.setmode(GPIO.BOARD)
@@ -33,7 +25,6 @@ def CheckGPIOBoard(localGPIOBoard, globalGPIOBoard):
                         GPIO.setup(int(newitem.GPIONumber), GPIO.IN)
                     if newitem.GPIOMode == "out":
                         GPIO.setup(int(newitem.GPIONumber), GPIO.OUT)
-                        # print(f"Gpio {newitem.GPIONumber} is setting now")
                         GPIO.output(int(newitem.GPIONumber), int(newitem.GPIOStatus))
 
 
@@ -59,8 +50,7 @@ try:
             localGPIOBoard.sort(key=lambda x: x.GPIONumber)
 except:
     print("Nie udało się połączyć z serwerem")
-print("start task")
-time.sleep(1)
+time.sleep(5)
 
 
 def run():
@@ -109,24 +99,8 @@ while True:
         json_string = {"gpioNumber": int(newGpio.GPIONumber),
                        "GPIOStatus": int(newGpio.GPIOStatus),
                        "GPIOMode": newGpio.GPIOMode}
-        # print("pin number: ", int(newGpio.GPIONumber), " mode: ", newGpio.GPIOMode,
-        # " status: ", int(newGpio.GPIOStatus))
-        # print(json_string)
         r = requests.post(path, json=json_string, headers=myheaders)
         if r.status_code == 200:
             print("OK")
         else:
-            print("Not working")
-        # print(r.status_code)
-
-# t = Gpio(17, "out", 1)
-# pin = {"gpioNumber": t.gpioNumber, "GPIOStatus": t.GPIOStatus, "GPIOMode": t.GPIOMode}
-#
-# json_string = json.dumps(pin)
-# for item in localGPIOBoard:
-#     print(item.gpioNumber,item.GPIOMode,sep=' ')
-# for item in localGPIOBoard:
-#     if item.GPIONumber == 2:
-#         print(item.GPIONumber, item.GPIOStatus, item.GPIOMode, sep=' ')
-# command = input("$: ")
-
+            print("Server not response")
