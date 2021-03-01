@@ -1,0 +1,27 @@
+FROM python:3.8-slim
+
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends\
+	    apache2 \
+		nano
+RUN pip install --no-cache-dir requests
+RUN pip install  --no-cache-dir speedtest-cli
+
+
+LABEL Config Apache server
+EXPOSE 80 443
+#RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+COPY apache2.conf  /etc/apache2/
+WORKDIR /var/www/html/speedtest/
+COPY speedtest.html index.html
+COPY data.json data.json
+RUN touch .htacces
+RUN echo "Redirect 301  /speedtest/speedtest.html" > .htacces
+WORKDIR /
+COPY script.py ./
+COPY startup.sh ./
+RUN chmod +x startup.sh
+RUN echo "python script.py" >>~/.bashrc
+CMD  ./startup.sh 
+ENTRYPOINT ./startup.sh 
+ 
