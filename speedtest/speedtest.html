@@ -175,14 +175,14 @@ function I(id){return document.getElementById(id);}
 <script type="text/javascript">
     initUI();
 	setInterval(function(){ 
-		fetch('data.json')
+		fetch('http://localhost:8081/speedtest//data.json', { method: 'GET'})
   			.then(response => response.json())
   			.then(data => {
 			console.log(data)
 	  	I("dlText").textContent=data["downloads"]
 		I("ulText").textContent=data["uploads"];
 		I("pingText").textContent=data["ping"];
-  }); }, 1000);
+  }).catch(error => console.error(error)); }, 4000);
 	
 </script>
 </body>

@@ -4,12 +4,10 @@ RUN apt-get update
 RUN apt-get install -y --no-install-recommends\
 	    apache2 \
 		nano
-RUN pip install --no-cache-dir requests
 RUN pip install  --no-cache-dir speedtest-cli
 
-
 LABEL Config Apache server
-EXPOSE 80 443
+EXPOSE 80 
 #RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 COPY apache2.conf  /etc/apache2/
 WORKDIR /var/www/html/speedtest/
@@ -21,7 +19,7 @@ WORKDIR /
 COPY script.py ./
 COPY startup.sh ./
 RUN chmod +x startup.sh
-RUN echo "python script.py" >>~/.bashrc
+
 CMD  ./startup.sh 
-ENTRYPOINT ./startup.sh 
+#ENTRYPOINT ./startup.sh 
  
