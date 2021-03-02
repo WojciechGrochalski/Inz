@@ -8,7 +8,8 @@ RUN pip install  --no-cache-dir speedtest-cli
 
 LABEL Config Apache server
 EXPOSE 80 
-#RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+ARG interval=1
+ENV interval ${interval}
 COPY apache2.conf  /etc/apache2/
 WORKDIR /var/www/html/speedtest/
 COPY speedtest.html index.html

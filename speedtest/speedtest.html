@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no" />
-<title>LibreSpeed Example</title>
-<link rel="shortcut icon" href="favicon.ico">
+<title>SpeedTest Docker</title>
+<meta http-equiv='cache-control' content='no-cache'>
+<meta http-equiv='pragma' content='no-cache'>
 
 <script type="text/javascript">
 
@@ -144,8 +145,12 @@ function I(id){return document.getElementById(id);}
 </style>
 </head>
 <body>
+	<br>
+	<br>
 <h1>SpeedTest from Docker</h1>
-
+<br>
+<br>
+<br>
 <div id="test">
     <div id="progressBar"><div id="progress"></div></div>
 	<div class="testGroup">
@@ -167,18 +172,18 @@ function I(id){return document.getElementById(id);}
 			<div class="unit">ms</div>
 		</div>
 	</div>
-	<div id="ipArea">
-		IP Address: <span id="ip"></span>
-	</div>
+	
 </div>
 
 <script type="text/javascript">
     initUI();
 	setInterval(function(){ 
-		fetch('http://localhost:8081/speedtest//data.json', { method: 'GET'})
-  			.then(response => response.json())
-  			.then(data => {
-			console.log(data)
+		fetch('http://localhost:8081/speedtest/data.json', { method: 'GET'},{cache: "no-cache"})
+  			.then(response => response.json()	
+			)
+  		    .then(data => {
+				console.log(data)
+			
 	  	I("dlText").textContent=data["downloads"]
 		I("ulText").textContent=data["uploads"];
 		I("pingText").textContent=data["ping"];
