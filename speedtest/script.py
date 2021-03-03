@@ -28,10 +28,8 @@ def st():
     
         print(st.results.ping)
         data={"downloads":downloads, "uploads": upload, "ping": int(st.results.ping)}
-
-        file = open('/var/www/html/speedtest/data.json', 'w')
-        json.dump(data,file)
-        file.close()
+        with open('/var/www/html/speedtest/data.json', 'w') as outfile:
+            json.dump(data, outfile)
         
         print("done")
     except Exception as e:
