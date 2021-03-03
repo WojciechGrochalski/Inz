@@ -1,10 +1,7 @@
 
 import os
-import re
-import subprocess
 import time
 import speedtest
-import threading
 import json
        
 interval = int(os.environ['interval'])

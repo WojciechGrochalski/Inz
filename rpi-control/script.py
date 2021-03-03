@@ -19,14 +19,13 @@ def CheckGPIOBoard(localGPIOBoard, globalGPIOBoard):
                 if item.GPIOStatus != newitem.GPIOStatus or item.GPIOMode != newitem.GPIOMode:
                     item.GPIOStatus = newitem.GPIOStatus
                     item.GPIOMode = newitem.GPIOMode
-                    GPIO.setmode(GPIO.BOARD)
+                    GPIO.setmode(GPIO.BCM)
                     GPIO.setwarnings(False)
                     if newitem.GPIOMode == "in":
                         GPIO.setup(int(newitem.GPIONumber), GPIO.IN)
                     if newitem.GPIOMode == "out":
                         GPIO.setup(int(newitem.GPIONumber), GPIO.OUT)
                         GPIO.output(int(newitem.GPIONumber), int(newitem.GPIOStatus))
-
 
 
 class Gpio:
@@ -50,10 +49,10 @@ try:
             localGPIOBoard.sort(key=lambda x: x.GPIONumber)
 except:
     print("Nie udało się połączyć z serwerem")
-time.sleep(5)
 
 
 def run():
+    time.sleep(5)
     while end != "exit":
         try:
             continousRequest = requests.get(path, headers=myheaders)
@@ -72,7 +71,7 @@ def run():
             print(e)
         except:
             print("Nie udało się połączyć z serwerem")
-        time.sleep(1)
+        time.sleep(5)
 
 
 thread = threading.Thread(target=run, args=())
