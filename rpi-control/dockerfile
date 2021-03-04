@@ -7,7 +7,6 @@ RUN apt-get install -y   gcc musl-dev \
 	&& apt-get autoremove -y
 RUN pip install --no-cache-dir requests
 
-COPY script.py ./
 COPY scriptRPI.py ./
-COPY autostart.py ./
-CMD ["python", "./autostart.py"]
+
+CMD ["python", "./scriptRPI.py"]
