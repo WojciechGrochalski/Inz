@@ -13,10 +13,7 @@
 	I("dlText").textContent="";
 	I("ulText").textContent="";
 	I("pingText").textContent="";
-	I("ip").textContent="";
 }
-
-
 function I(id){return document.getElementById(id);}
 </script>
 
@@ -170,9 +167,6 @@ function I(id){return document.getElementById(id);}
 			<div class="unit">ms</div>
 		</div>
 	</div>
-	<div id="ipArea">
-		IP Address: <span id="ip"></span>
-	</div>
 </div>
 
 <script type="text/javascript">
@@ -187,7 +181,6 @@ function I(id){return document.getElementById(id);}
 		  	I("dlText").textContent=data["downloads"]
 			I("ulText").textContent=data["uploads"];
 			I("pingText").textContent=data["ping"];
-			I("ip").textContent=data["ip"];
   }).catch(error => console.error(error)); }, 4000);
 	
 </script>

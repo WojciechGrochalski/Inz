@@ -7,7 +7,7 @@ import platform
 try:
     import RPi.GPIO as GPIO
 except:
-    print("You dont use RPI")
+    print("You dont use RPI\n Only console available")
 
 localGPIOBoard = []
 globalGPIOBoard = []

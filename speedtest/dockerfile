@@ -1,27 +1,26 @@
-FROM python:3.8-slim
+FROM python:3.8-alpine
 
-RUN apt-get update
-RUN apt-get install -y --no-install-recommends\
+
+RUN apk add --no-cache --update \
 	    apache2 \
-		nano
-RUN pip install  --no-cache-dir speedtest-cli
+		nano  \ 
+		openrc \
+ && pip install  --no-cache-dir speedtest-cli
 
-LABEL Config Apache server
 EXPOSE 80 
+LABEL Config Apache server
+
 ARG interval=1
 ENV interval ${interval}
 COPY apache2.conf  /etc/apache2/
-WORKDIR /var/www/html/speedtest/
+WORKDIR /var/www/localhost/htdocs/speedtest/
 COPY speedtest.html index.html
 COPY data.json data.json
-RUN touch .htacces
-RUN echo "Redirect 301  /speedtest/speedtest.html" > .htacces
-
+RUN echo "ServerName localhost" >> /etc/apache2/httpd.conf
+RUN sed -i 's/It works!/It works! from Container/g' /var/www/localhost/htdocs/index.html
 WORKDIR /
 COPY script.py ./
 COPY startup.sh ./
 RUN chmod +x startup.sh
-
-CMD  ./startup.sh 
-#ENTRYPOINT ./startup.sh 
- 
+RUN rc-update add apache2 boot
+CMD ["python", "script.py"]

@@ -4,22 +4,14 @@ import time
 import speedtest
 import json
 import socket
+
 try:
     interval = int(os.environ['interval'])
 except:
     interval=5
-def get_ip():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    try:
-        # doesn't even have to be reachable
-        s.connect(('10.255.255.255', 1))
-        IP = s.getsockname()[0]
-    except Exception:
-        IP = '127.0.0.1'
-    finally:
-        s.close()
-    return IP
-def st(ip):
+
+
+def st():
     try:
         st = speedtest.Speedtest()
         st.get_best_server()
@@ -37,17 +29,17 @@ def st(ip):
         print('1) Ping: ', end='')
     
         print(st.results.ping)
-        data={"downloads":downloads, "uploads": upload, "ping": int(st.results.ping), "ip":ip}
-        with open('/var/www/html/speedtest/data.json', 'w') as outfile:
+        data={"downloads":downloads, "uploads": upload, "ping": int(st.results.ping)}
+        with open('/var/www/localhost/htdocs/speedtest/data.json', 'w') as outfile:
             json.dump(data, outfile)
         
         print("done")
     except Exception as e:
         print(e)
 print("Start testing")
-ip=get_ip()
+os.system("/usr/sbin/httpd -d FOREGROUND")
 while True :
-    st(ip)
+    st()
     time.sleep(interval*60)
 print("Exiting program")
 
