@@ -10,7 +10,6 @@ try:
 except:
     interval=5
 
-
 def st():
     try:
         st = speedtest.Speedtest()

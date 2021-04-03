@@ -3,7 +3,6 @@ FROM python:3.8-alpine
 
 RUN apk add --no-cache --update \
 	    apache2 \
-		nano  \ 
 		openrc \
  && pip install  --no-cache-dir speedtest-cli
 
@@ -20,7 +19,6 @@ RUN echo "ServerName localhost" >> /etc/apache2/httpd.conf
 RUN sed -i 's/It works!/It works! from Container/g' /var/www/localhost/htdocs/index.html
 WORKDIR /
 COPY script.py ./
-COPY startup.sh ./
-RUN chmod +x startup.sh
+
 RUN rc-update add apache2 boot
 CMD ["python", "script.py"]
