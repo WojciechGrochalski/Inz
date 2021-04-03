@@ -3,15 +3,13 @@ FROM python:3.8-alpine
 
 RUN apk add --no-cache --update \
 	    apache2 \
-		openrc \
- && pip install  --no-cache-dir speedtest-cli
+ 		&& pip install  --no-cache-dir speedtest-cli 
 
 EXPOSE 80 
 LABEL Config Apache server
 
 ARG interval=1
 ENV interval ${interval}
-COPY apache2.conf  /etc/apache2/
 WORKDIR /var/www/localhost/htdocs/speedtest/
 COPY speedtest.html index.html
 COPY data.json data.json
@@ -20,5 +18,4 @@ RUN sed -i 's/It works!/It works! from Container/g' /var/www/localhost/htdocs/in
 WORKDIR /
 COPY script.py ./
 
-RUN rc-update add apache2 boot
 CMD ["python", "script.py"]
