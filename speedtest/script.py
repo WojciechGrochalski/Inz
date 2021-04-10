@@ -3,7 +3,7 @@ import os
 import time
 import speedtest
 import json
-import socket
+
 
 try:
     interval = int(os.environ['interval'])
@@ -36,7 +36,7 @@ def st():
     except Exception as e:
         print(e)
 print("Start testing")
-os.system("/usr/sbin/httpd -d FOREGROUND")
+
 while True :
     st()
     time.sleep(interval*60)
